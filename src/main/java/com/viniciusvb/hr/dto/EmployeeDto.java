@@ -1,17 +1,15 @@
-package com.viniciusvb.hr.model;
+package com.viniciusvb.hr.dto;
 
-import jakarta.persistence.*;
+import com.viniciusvb.hr.model.Employee;
+import com.viniciusvb.hr.model.EmployeeStatus;
+
+import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import java.util.Objects;
+public class EmployeeDto {
 
-@Entity
-@Table(name = "tb_employee")
-public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
@@ -19,10 +17,14 @@ public class Employee {
     private LocalDate admissionDate;
     private EmployeeStatus status;
 
-    public Employee() {
+    public EmployeeDto() {
     }
 
-    public Employee(String name, String email, BigDecimal salary, LocalDate admissionDate, EmployeeStatus status) {
+    public EmployeeDto(Employee entity) {
+        BeanUtils.copyProperties(entity, this);
+    }
+
+    public EmployeeDto(String name, String email, BigDecimal salary, LocalDate admissionDate, EmployeeStatus status) {
         this.name = name;
         this.email = email;
         this.salary = salary;
@@ -30,32 +32,12 @@ public class Employee {
         this.status = status;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Employee employee = (Employee) o;
-        return Objects.equals(id, employee.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), id);
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", salary=" + salary +
-                ", admissionDate=" + admissionDate +
-                ", status=" + status +
-                '}';
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public BigDecimal getSalary() {
