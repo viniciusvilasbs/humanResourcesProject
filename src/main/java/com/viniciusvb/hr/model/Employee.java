@@ -16,7 +16,9 @@ public class Employee {
     private String name;
     private String email;
     private BigDecimal salary;
+
     private LocalDate admissionDate;
+    @Enumerated(EnumType.STRING)
     private EmployeeStatus status;
 
     public Employee() {
