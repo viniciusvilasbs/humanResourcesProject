@@ -5,7 +5,6 @@ import com.viniciusvb.hr.model.Employee;
 import com.viniciusvb.hr.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,9 +23,14 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Employee> registration(@RequestBody EmployeeDto employeeDto) {
+    public Employee registration(@RequestBody EmployeeDto employeeDto) {
         Employee employee = employeeService.fromDto(employeeDto);
-        employeeService.save(employee);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return employeeService.save(employee);
+    }
+
+    @DeleteMapping(path = "/{employeeId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long employeeId) {
+        employeeService.delete(employeeId);
     }
 }
