@@ -21,6 +21,11 @@ public class EmployeeController {
         return employeeService.findAll();
     }
 
+    @GetMapping(path = "/{employeeId}")
+    public EmployeeDto findById(@PathVariable Long employeeId) {
+        return employeeService.findById(employeeId);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee registration(@RequestBody EmployeeDto employeeDto) {

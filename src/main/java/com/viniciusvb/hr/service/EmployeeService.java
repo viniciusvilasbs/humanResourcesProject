@@ -2,6 +2,7 @@ package com.viniciusvb.hr.service;
 
 import com.viniciusvb.hr.dto.EmployeeDto;
 import com.viniciusvb.hr.model.Employee;
+import com.viniciusvb.hr.model.EmployeeStatus;
 import com.viniciusvb.hr.repository.EmployeeRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,22 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Transactional(readOnly = true)
     public List<EmployeeDto> findAll() {
         List<Employee> allEmployeesList = employeeRepository.findAll();
         return allEmployeesList.stream()
                 .map(EmployeeDto::new)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public EmployeeDto findById(Long employeeId) {
+        if (employeeRepository.findById(employeeId).isPresent()) {
+            Employee employee = employeeRepository.findById(employeeId).get();
+            return new EmployeeDto(employee);
+        } else {
+            throw new ObjectNotFoundException("Employee not found, id: ", employeeId);
+        }
     }
 
     @Transactional
